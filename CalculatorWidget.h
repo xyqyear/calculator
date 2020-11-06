@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <QtWidgets/QMainWindow>
+#include <QDesktopServices>
 #include <qevent.h>
 #include "ui_Calculator.h"
 #include "calculator.h"

@@ -11,17 +11,18 @@ void CalculatorWidget::insertTextToExpressionTextBrowser(QString& text)
 {
     // there's some problems to do with QTextBrower::insertPlainText
     // so we use this method
-    QString& expression = ui.expressionTextBrowser->toPlainText();
+    QString& expression = ui.expressionPlainTextEdit->toPlainText();
     expression.append(text);
-    ui.expressionTextBrowser->setText(expression);
+    ui.expressionPlainTextEdit->setPlainText(expression);
     evaluateExpression();
 }
 
 void CalculatorWidget::removeLastCharFromExpressionTextBrowser()
 {
-    QString& currentExpression = ui.expressionTextBrowser->toPlainText();
+    QString& currentExpression = ui.expressionPlainTextEdit->toPlainText();
     if (currentExpression.size() > 0)
-        ui.expressionTextBrowser->setText(currentExpression.remove(currentExpression.size()-1, 1));
+        ui.expressionPlainTextEdit->setPlainText(currentExpression.remove(currentExpression.size()-1, 1));
+
     if (currentExpression.size() == 0)
         ui.resultTextBrowser->clear();
     else
@@ -30,15 +31,15 @@ void CalculatorWidget::removeLastCharFromExpressionTextBrowser()
 
 void CalculatorWidget::clearExpressionTextBrowser()
 {
-    ui.expressionTextBrowser->clear();
+    ui.expressionPlainTextEdit->clear();
     ui.resultTextBrowser->clear();
 }
 
 void CalculatorWidget::evaluateExpression()
 {
-    string& expression = ui.expressionTextBrowser->toPlainText().toStdString();
+    string& expression = ui.expressionPlainTextEdit->toPlainText().toStdString();
     if (expression.length() == 0)
-        return;
+        ui.resultTextBrowser->clear();
     else
     {
         double result;
@@ -109,4 +110,7 @@ void CalculatorWidget::setupSignalSlot()
     connect(ui.backspaceButton, &QPushButton::clicked, this, &CalculatorWidget::removeLastCharFromExpressionTextBrowser);
     connect(ui.clearButton, &QPushButton::clicked, this,     &CalculatorWidget::clearExpressionTextBrowser);
     connect(ui.equalButton, &QPushButton::clicked, this,     &CalculatorWidget::evaluateExpression);
+    connect(ui.helpButton, &QPushButton::clicked, [=]() {QDesktopServices::openUrl(QString("https://github.com/xyqyear/calculator")); });
+
+    connect(ui.expressionPlainTextEdit, &QPlainTextEdit::textChanged, this, &CalculatorWidget::evaluateExpression);
 }
