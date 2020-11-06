@@ -78,7 +78,7 @@ int getOutStackPrecedence(char _operator)
     return -1;
 }
 
-void tokenizeExpression(vector<string>& tokens, string expression)
+void tokenizeExpression(vector<string>& tokens, string& expression)
 {
     size_t start = 0;
     size_t expression_size = expression.size();
@@ -91,7 +91,7 @@ void tokenizeExpression(vector<string>& tokens, string expression)
             // if we have digits left to parse
             if (i - start > 0)
             {
-                string& current_token = expression.substr(start, i - start);
+                string current_token = expression.substr(start, i - start);
                 tokens.push_back(current_token);
             }
 
@@ -178,7 +178,6 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
                     char stackTopOperator = operatorStack.topValue();
                     operatorStack.pop();
                     operandStack.push(evalSingleExpression(operand1, operand0, stackTopOperator));
-                    continue;
                 }
             }
         }

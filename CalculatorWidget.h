@@ -25,7 +25,6 @@ public slots:
 private:
     // properties
     Ui::CalculatorClass ui;
-    bool isFirstInsertion;
 
     // mothods
     void setupSignalSlot();
