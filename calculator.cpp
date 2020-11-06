@@ -85,18 +85,35 @@ void tokenizeExpression(vector<string>& tokens, string expression)
     for (size_t i = 0; i < expression_size; i++)
     {
         char current_char = expression[i];
-        // if the current char isn't a digit
+        // if the current char isn't a digit nor a part of a number
         if (!(isdigit(current_char) || current_char == '.'))
         {
             // if we have digits left to parse
             if (i - start > 0)
             {
-                string current_token = expression.substr(start, i - start);
+                string& current_token = expression.substr(start, i - start);
                 tokens.push_back(current_token);
             }
+
             // if the currernt char is a space then we ignore it
-            if (current_char != ' ')
-                tokens.push_back(string(1, current_char));
+            if (current_char == ' ')
+                continue;
+
+            // if the current char is '-', then we need to know
+            // if it belongs to a nubmer or it's an operator
+            if (current_char == '-')
+            {
+                // if this is the first token we've ever parsed
+                // then it must belong to the next number
+                if (tokens.empty())
+                    continue;
+                char lastChar = expression[i - 1];
+                // if the charact before '-' is not a nubmer nor a right parenthesis
+                // then it means this '-' belongs to the next number
+                if (!(lastChar == ')' || isdigit(lastChar)))
+                    continue;
+            }
+            tokens.push_back(string(1, current_char));
             start = i + 1;
         }
     }
@@ -110,6 +127,7 @@ void tokenizeExpression(vector<string>& tokens, string expression)
         tokens.push_back("=");
 }
 
+// the return value is for error detection
 bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* result)
 {
     vector<char> operatorStack;
@@ -117,17 +135,20 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
 
     for (auto token : expression_tokens)
     {
-        char tokenFirstChar = token[0];
-        if (isdigit(tokenFirstChar))
+        // we use the last character of the token string 
+        // to see if it's a number or not
+        char tokenLastChar = token.back();
+        if (isdigit(tokenLastChar))
         {
             operandStack.push_back(stod(token));
         }
-        else if (getInStackPrecedence(tokenFirstChar) != -1)
+        else if (getInStackPrecedence(tokenLastChar) != -1)
         {
-            int tokenOutStackPrecedence = getOutStackPrecedence(tokenFirstChar);
+            int tokenOutStackPrecedence = getOutStackPrecedence(tokenLastChar);
             while (1)
             {
                 int stackTopInStackPrecedence;
+                // if operator stack is empty, we simply put the operator in
                 if (operatorStack.empty())
                     stackTopInStackPrecedence = -1;
                 else
@@ -135,7 +156,7 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
 
                 if (stackTopInStackPrecedence < tokenOutStackPrecedence)
                 {
-                    operatorStack.push_back(tokenFirstChar);
+                    operatorStack.push_back(tokenLastChar);
                     break;
                 }
                 else if (stackTopInStackPrecedence == tokenOutStackPrecedence)
@@ -165,6 +186,7 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
     return true;
 }
 
+// the return value is for error detection
 bool evaluateStringExpression(string& expression, double* result)
 {
     vector<string> tokens;

@@ -1,0 +1,5 @@
+.vs/
+x64/
+Calculator.sln
+Calculator.vcxproj*
+cpp.hint
