@@ -1,6 +1,9 @@
 <RCC>
-    <qresource prefix="/Calculator"/>
-    <qresource prefix="/qt/etc">
-        <file>qt.conf</file>
-    </qresource>
+  <qresource prefix="/Calculator"/>
+  <qresource prefix="/qt/etc">
+    <file>qt.conf</file>
+  </qresource>
+  <qresource prefix="icon">
+    <file>calculator.ico</file>
+  </qresource>
 </RCC>

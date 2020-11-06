@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Calculator</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="Calculator.qrc">
+    <normaloff>:/icon/calculator.ico</normaloff>:/icon/calculator.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -212,6 +216,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>减</string>
+        </property>
         <property name="text">
          <string>-</string>
         </property>
@@ -313,6 +320,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>加</string>
+        </property>
         <property name="text">
          <string>+</string>
         </property>
@@ -351,6 +361,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>除以</string>
+        </property>
         <property name="text">
          <string>/</string>
         </property>
@@ -369,6 +382,9 @@
           <family>Consolas</family>
           <pointsize>20</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>乘</string>
         </property>
         <property name="text">
          <string>*</string>
@@ -408,6 +424,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>取模</string>
+        </property>
         <property name="text">
          <string>%</string>
         </property>
@@ -427,6 +446,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>开方</string>
+        </property>
         <property name="text">
          <string>&amp;&amp;</string>
         </property>
@@ -445,6 +467,9 @@
           <family>Consolas</family>
           <pointsize>20</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>左括号</string>
         </property>
         <property name="text">
          <string>(</string>
@@ -484,6 +509,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>清除</string>
+        </property>
         <property name="text">
          <string>C</string>
         </property>
@@ -521,6 +549,9 @@
           <family>Consolas</family>
           <pointsize>20</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>右括号</string>
         </property>
         <property name="text">
          <string>)</string>
@@ -579,6 +610,9 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>求幂</string>
+        </property>
         <property name="text">
          <string>^</string>
         </property>
@@ -597,6 +631,9 @@
           <family>Consolas</family>
           <pointsize>20</pointsize>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>退格</string>
         </property>
         <property name="text">
          <string>←</string>
