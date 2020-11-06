@@ -130,8 +130,8 @@ void tokenizeExpression(vector<string>& tokens, string expression)
 // the return value is for error detection
 bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* result)
 {
-    vector<char> operatorStack;
-    vector<double> operandStack;
+    LStack<char> operatorStack;
+    LStack<double> operandStack;
 
     for (auto token : expression_tokens)
     {
@@ -140,7 +140,7 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
         char tokenLastChar = token.back();
         if (isdigit(tokenLastChar))
         {
-            operandStack.push_back(stod(token));
+            operandStack.push(stod(token));
         }
         else if (getInStackPrecedence(tokenLastChar) != -1)
         {
@@ -149,32 +149,35 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
             {
                 int stackTopInStackPrecedence;
                 // if operator stack is empty, we simply put the operator in
-                if (operatorStack.empty())
+                if (operatorStack.length() == 0)
                     stackTopInStackPrecedence = -1;
                 else
-                    stackTopInStackPrecedence = getInStackPrecedence(operatorStack.back());
+                    stackTopInStackPrecedence = getInStackPrecedence(operatorStack.topValue());
 
                 if (stackTopInStackPrecedence < tokenOutStackPrecedence)
                 {
-                    operatorStack.push_back(tokenLastChar);
+                    operatorStack.push(tokenLastChar);
                     break;
                 }
                 else if (stackTopInStackPrecedence == tokenOutStackPrecedence)
                 {
-                    operatorStack.pop_back();
+                    if (operatorStack.length() > 0)
+                        operatorStack.pop();
+                    else
+                        return false;
                     break;
                 }
                 else
                 {
-                    if (operandStack.size() < 2 || operatorStack.size() == 0)
+                    if (operandStack.length() < 2 || operatorStack.length() == 0)
                         return false;
-                    double operand0 = operandStack.back();
-                    operandStack.pop_back();
-                    double operand1 = operandStack.back();
-                    operandStack.pop_back();
-                    char stackTopOperator = operatorStack.back();
-                    operatorStack.pop_back();
-                    operandStack.push_back(evalSingleExpression(operand1, operand0, stackTopOperator));
+                    double operand0 = operandStack.topValue();
+                    operandStack.pop();
+                    double operand1 = operandStack.topValue();
+                    operandStack.pop();
+                    char stackTopOperator = operatorStack.topValue();
+                    operatorStack.pop();
+                    operandStack.push(evalSingleExpression(operand1, operand0, stackTopOperator));
                     continue;
                 }
             }
@@ -182,7 +185,7 @@ bool evaluateTokenizedExpression(vector<string>& expression_tokens, double* resu
         else
             return false;
     }
-    *result = operandStack.back();
+    *result = operandStack.topValue();
     return true;
 }
 
