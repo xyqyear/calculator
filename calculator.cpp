@@ -100,18 +100,27 @@ void tokenizeExpression(vector<string>& tokens, string& expression)
                 continue;
 
             // if the current char is '-', then we need to know
-            // if it belongs to a nubmer or it's an operator
+            // if it's and unary operator or an binocular operator
+            // (if it's an negative number then we can also treat it as an unary '-' plus a nubmer)
             if (current_char == '-')
             {
                 // if this is the first token we've ever parsed
-                // then it must belong to the next number
+                // then it must be an unary operator
+                // then we simply push a '0' to the stack
                 if (tokens.empty())
+                {
+                    tokens.push_back("0");
                     continue;
+                }
+
                 char lastChar = expression[i - 1];
                 // if the charact before '-' is not a nubmer nor a right parenthesis
-                // then it means this '-' belongs to the next number
+                // then it it an unary operator
                 if (!(lastChar == ')' || isdigit(lastChar)))
+                {
+                    tokens.push_back("0");
                     continue;
+                }
             }
             tokens.push_back(string(1, current_char));
             start = i + 1;
